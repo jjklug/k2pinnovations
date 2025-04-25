@@ -1,14 +1,17 @@
 import matplotlib.pyplot as plt
-from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.datasets import make_classification
-
-
-from sklearn.metrics import accuracy_score
-
-import pandas as pd
 import numpy as np
+import pandas as pd
 
+from sklearn.datasets import make_classification
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
+
+#K-Folds imports
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+
+#import data
 data = pd.read_csv('mas_data_ex_3.5.csv')
 
 X = data[['x1', 'x2']].values #input states
@@ -34,10 +37,9 @@ y_values = X[:, 1]
 plt.scatter(x_values, y_values, c=all_prediction, cmap='viridis', s=100) 
 plt.show()
 
-print("starting K folds")
-from sklearn.model_selection import KFold
-from sklearn.model_selection import cross_val_score
+
 #K-folds
+print("starting K folds")
 k = 5 #number of folds
 kf = KFold(n_splits=k, shuffle=True, random_state=42)
 model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=300, random_state=42)
