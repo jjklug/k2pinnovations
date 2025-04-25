@@ -29,7 +29,20 @@ print("Accuracy:", accuracy_score(y_test, predictions, normalize=True)) #show ac
 
 #graph
 all_prediction = clf.predict(X)
-x = X[:, 0]
-y = X[:, 1]
-plt.scatter(x, y, c=all_prediction, cmap='viridis', s=100) 
+x_values = X[:, 0]
+y_values = X[:, 1]
+plt.scatter(x_values, y_values, c=all_prediction, cmap='viridis', s=100) 
 plt.show()
+
+print("starting K folds")
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+#K-folds
+k = 5 #number of folds
+kf = KFold(n_splits=k, shuffle=True, random_state=42)
+model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=300, random_state=42)
+scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
+
+print(f"Cross-validation scores: {scores}")
+print(f"Mean accuracy: {scores.mean()}")
+print(f"Standard deviation: {scores.std()}")
