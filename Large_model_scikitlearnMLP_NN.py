@@ -24,7 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #70/30 
 
 #defaults uses relu which can handle nonlinearity
 #MPLClassifier is used for binary
-clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=600, random_state=42)
+clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42)
 #clf = MLPClassifier(hidden_layer_sizes=(20, 20), max_iter=300, random_state=42)
 clf.fit(X_train, y_train)
 
@@ -43,9 +43,10 @@ plt.show()
 
 #K-folds
 print("starting K folds")
-k = 5 #number of folds
+k = 8 #number of folds
 kf = KFold(n_splits=k, shuffle=True, random_state=42)
-model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=600, random_state=42)
+
+model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42)
 scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
 
 print(f"Cross-validation scores: {scores}")
@@ -53,3 +54,19 @@ print(f"Mean accuracy: {scores.mean()}")
 print(f"Standard deviation: {scores.std()}")
 
 print("---------------------------------------------------------")
+
+print("starting K folds test")
+accuracies = []
+#hidden_layers = ((20,20), (20,10), (50,10), (10,10), (20, 15,10))
+#hidden_layers = ((10,5),(5,10), (5,5), (10), (10,10), (10, 10,10))
+#hidden_layers = ((5,10), (5,5), (10,10))
+#hidden_layers = ((5,10, 5), (3,10), (5,10, 15))
+#hidden_layers = ((6,12), (4,8), (8, 16))
+hidden_layers = ((5, 10, 2), (5,10))
+for i in range(0, len(hidden_layers)):
+    k = 8 #number of folds
+    kf = KFold(n_splits=k, shuffle=True, random_state=42)
+    model = MLPClassifier(hidden_layer_sizes=hidden_layers[i], max_iter=600, random_state=42)
+    scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
+    accuracies.append(scores.mean())
+print(accuracies)
