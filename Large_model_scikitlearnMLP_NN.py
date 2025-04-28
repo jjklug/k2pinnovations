@@ -11,6 +11,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 
+print("--------------------------------------------------------------")
+
 #import data
 data = pd.read_csv('mas_dataset_NN.csv')
 
@@ -43,9 +45,11 @@ plt.show()
 print("starting K folds")
 k = 5 #number of folds
 kf = KFold(n_splits=k, shuffle=True, random_state=42)
-model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=300, random_state=42)
+model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=600, random_state=42)
 scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
 
 print(f"Cross-validation scores: {scores}")
 print(f"Mean accuracy: {scores.mean()}")
 print(f"Standard deviation: {scores.std()}")
+
+print("---------------------------------------------------------")
