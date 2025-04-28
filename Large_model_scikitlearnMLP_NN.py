@@ -24,7 +24,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #70/30 
 
 #defaults uses relu which can handle nonlinearity
 #MPLClassifier is used for binary
-clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42)
+#clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42) only needs 300 iterations
+clf = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=600, random_state=42)
 #clf = MLPClassifier(hidden_layer_sizes=(20, 20), max_iter=300, random_state=42)
 clf.fit(X_train, y_train)
 
@@ -32,21 +33,13 @@ predictions = clf.predict(X_test) #predictions
 
 print("Accuracy:", accuracy_score(y_test, predictions, normalize=True)) #show accuracy
 
-'''
-#graph
-all_prediction = clf.predict(X)
-x_values = X[:, 0]
-y_values = X[:, 1]
-plt.scatter(x_values, y_values, c=all_prediction, cmap='viridis', s=100) 
-plt.show()
-'''
-
 #K-folds
 print("starting K folds")
 k = 8 #number of folds
 kf = KFold(n_splits=k, shuffle=True, random_state=42)
 
-model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42)
+#model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42)
+model = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=600, random_state=42)
 scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
 
 print(f"Cross-validation scores: {scores}")
