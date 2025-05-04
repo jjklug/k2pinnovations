@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
 
 data = pd.read_csv('mas_data_ex_3.5.csv')
 X = data[['x1', 'x2']].values
@@ -47,4 +49,25 @@ plt.title('Four Logistic Regression Boundaries Approximating MAS')
 plt.legend()
 plt.axis('equal')
 plt.grid(True)
+plt.show()
+
+# Compute and plot confusion matrix based on the inside_MAS column
+y_true = data['inside_MAS'].values  # True labels from the inside_MAS column
+
+# Combine predictions from all models to determine the final classification
+# Use the maximum probability across all models as the decision
+predicted_probs = np.zeros(X.shape[0])
+for model in models.values():
+    predicted_probs += model.predict_proba(X)[:, 1]  # Sum probabilities from all models
+
+# Final prediction: classify as 1 (inside MAS) if the combined probability is >= 0.5
+y_pred = (predicted_probs >= 0.5).astype(int)
+
+# Compute the confusion matrix
+conf_matrix = confusion_matrix(y_true, y_pred)
+
+# Plot the confusion matrix
+disp = ConfusionMatrixDisplay(confusion_matrix=conf_matrix, display_labels=[0, 1])
+disp.plot(cmap='Blues', values_format='d')
+plt.title('Logistic Regression(Test Dataset) - Inside MAS Classification')
 plt.show()
