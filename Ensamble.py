@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 
@@ -55,6 +56,11 @@ def add_point(x, y, color):
     ax.scatter(x, y, color=color, s=50)
     plt.draw()
 
+true_pos = 0
+false_pos = 0
+true_neg = 0
+false_neg = 0
+
 for i in range(0, len(y_test)):
     color = 'black'
     predicted_value = predictions[i]
@@ -63,17 +69,94 @@ for i in range(0, len(y_test)):
     y_on_plot = X_test[i][1]
     if predicted_value == actual_value:
         if predicted_value == 1:
-            color = 'light_green'
+            color = 'lightgreen'
+            true_pos += 1
         else:
             color = 'pink'
+            true_neg += 1
     else:
         if predicted_value == 1:
             color = 'green'
+            false_pos += 1
         else:
             color = 'red'
+            false_neg += 1
     add_point(x_on_plot, y_on_plot, color)
-    
-    plt.show()
+
+legend_elements = [Line2D([0], [0], marker='o', color='w', markerfacecolor='lightgreen', markersize=10, label='True Positive'),
+                   Line2D([0], [0], marker='o', color='w', markerfacecolor='pink', markersize=10, label='True Negative'),
+                   Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=10, label='False Positive'),
+                   Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=10, label='False Negative')]
+
+plt.legend(handles=legend_elements)
+
+plt.show()
+
+
+# Data for the table
+data = [['True Positive', 'False Positive'], ['False Negative', 'True Negative']]
+
+# Creating the DataFrame with the labels
+df = pd.DataFrame(data, columns=[true_pos, false_neg], index=[false_pos, true_neg])
+
+# Create a plot to display the table
+fig, ax = plt.subplots(figsize=(5, 3))  # Adjust the size as needed
+ax.axis('tight')
+ax.axis('off')
+
+# Plot the table
+table = ax.table(cellText=df.values, colLabels=df.columns, rowLabels=df.index, loc='center', cellLoc='center')
+
+# Set colors for each cell
+for (i, j), cell in table.get_celld().items():
+    if i == 1 and j == 0:
+        cell.set_facecolor('lightgreen')
+    elif i == 1 and j == 1:
+        cell.set_facecolor('red')
+    elif i == 2 and j == 0:
+        cell.set_facecolor('green')
+    elif i == 2 and j == 1:
+        cell.set_facecolor('pink')
+
+# Adjust font size and table styling
+table.auto_set_font_size(False)
+table.set_fontsize(14)
+table.scale(1, 1.5)
+
+plt.show()
+
+
+# Data for the table
+data = [['True Positive', 'False Positive'], ['False Negative', 'True Negative']]
+
+# Creating the DataFrame with the labels
+df = pd.DataFrame(data, columns=['Predicted True', 'Predicted False'], index=['Actual True', 'Actual False'])
+
+# Create a plot to display the table
+fig, ax = plt.subplots(figsize=(5, 3))  # Adjust the size as needed
+ax.axis('tight')
+ax.axis('off')
+
+# Plot the table
+table = ax.table(cellText=df.values, colLabels=df.columns, rowLabels=df.index, loc='center', cellLoc='center')
+
+# Set colors for each cell
+for (i, j), cell in table.get_celld().items():
+    if i == 1 and j == 0:
+        cell.set_facecolor('lightgreen')
+    elif i == 1 and j == 1:
+        cell.set_facecolor('red')
+    elif i == 2 and j == 0:
+        cell.set_facecolor('green')
+    elif i == 2 and j == 1:
+        cell.set_facecolor('pink')
+
+# Adjust font size and table styling
+table.auto_set_font_size(False)
+table.set_fontsize(14)
+table.scale(1, 1.5)
+
+plt.show()
 
 
 '''This part of the code isn't working properly so I used the above method instead
