@@ -25,8 +25,6 @@ y = data['Y'].values  # whether inside or outside of MAS
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=seed) #70/30 train test split
 
 
-
-
 # Train several neural networks on different bootstrap samples
 n_ensemble = 120
 models = []
@@ -49,6 +47,33 @@ ensemble_accuracy = accuracy_score(y_test, ensemble.predict(X_test))
 print("NN Accuracies: ", individual_accuracies)
 print("Ensemble Accuracy:" , ensemble_accuracy)
 
+predictions = ensemble.predict(X_test)
+
+fig, ax = plt.subplots()
+
+def add_point(x, y, color):
+    ax.scatter(x, y, color=color, s=50)
+    plt.draw()
+
+for i in range(0, len(y_test)):
+    color = 'black'
+    predicted_value = predictions[i]
+    actual_value = y_test[i]
+    x_on_plot = X_test[i][0]
+    y_on_plot = X_test[i][1]
+    if predicted_value == actual_value:
+        if predicted_value == 1:
+            color = 'light_green'
+        else:
+            color = 'pink'
+    else:
+        if predicted_value == 1:
+            color = 'green'
+        else:
+            color = 'red'
+    add_point(x_on_plot, y_on_plot, color)
+    
+    plt.show()
 
 
 '''This part of the code isn't working properly so I used the above method instead

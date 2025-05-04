@@ -48,14 +48,13 @@ print(f"Standard deviation: {scores.std()}")
 
 print("---------------------------------------------------------")
 
+'''
+#Here we tested different hidden layers.  (5, 10) had the highest accuracy of 98.5%.
+#It is commented out to because it takes a while to run
 print("starting K folds test")
 accuracies = []
-#hidden_layers = ((20,20), (20,10), (50,10), (10,10), (20, 15,10))
-#hidden_layers = ((10,5),(5,10), (5,5), (10), (10,10), (10, 10,10))
-#hidden_layers = ((5,10), (5,5), (10,10))
-#hidden_layers = ((5,10, 5), (3,10), (5,10, 15))
-#hidden_layers = ((6,12), (4,8), (8, 16))
-hidden_layers = ((5, 10, 2), (5,10))
+hidden_layers = ((20,20), (20,10), (50,10), (10,10), (20, 15,10), (10,5),(5,10), (5,5), (10),
+                  (10, 10,10), (5,10, 5), (3,10), (5,10, 15), (6,12), (4,8), (8,16), (5, 10, 2), (5,10))
 for i in range(0, len(hidden_layers)):
     k = 8 #number of folds
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
@@ -63,3 +62,4 @@ for i in range(0, len(hidden_layers)):
     scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
     accuracies.append(scores.mean())
 print(accuracies)
+'''
