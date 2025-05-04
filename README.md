@@ -9,6 +9,7 @@ Breakdown of Main files
 Files that are not a main part of the project.
 * scikitlearnMLP_NN.py was used to train a neural network on a smaller set of data just to show that it could be done
 * Large_model_scikitlearnMLP_NN.py was used to train a neural network on a larger data set but we ended up using an enemble of neural networks for higher accuracy
+* NN_Demo_For_Presentation is a shortened version to fit in the time limit of the presentation
 
 
 

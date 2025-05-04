@@ -1,3 +1,8 @@
+'''
+This is were the K-folds Validation was performed on the neural network
+It results in accuracy of .985
+'''
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

@@ -1,3 +1,6 @@
+'''
+This trains a neural network on data set with 2 inputs and 4 parameters
+'''
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

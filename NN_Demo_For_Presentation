@@ -1,3 +1,7 @@
+'''
+This is a shortened verison to be used for the presentation only
+'''
+
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import numpy as np

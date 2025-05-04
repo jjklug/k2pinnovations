@@ -1,3 +1,8 @@
+'''
+This file trains a singular Neural Network and runs K-folds validation
+Using an Ensemble of NN's is slightly more accurate but this can be used if speed is critical
+'''
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -25,7 +30,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #70/30 
 #defaults uses relu which can handle nonlinearity
 #MPLClassifier is used for binary
 #clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42) only needs 300 iterations
-clf = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=600, random_state=42)
+clf = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=1000, random_state=42)
 #clf = MLPClassifier(hidden_layer_sizes=(20, 20), max_iter=300, random_state=42)
 clf.fit(X_train, y_train)
 
@@ -39,7 +44,7 @@ k = 8 #number of folds
 kf = KFold(n_splits=k, shuffle=True, random_state=42)
 
 #model = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42)
-model = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=600, random_state=42)
+model = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=1000, random_state=42)
 scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
 
 print(f"Cross-validation scores: {scores}")
