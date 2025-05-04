@@ -28,7 +28,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 
 # Train several neural networks on different bootstrap samples
-n_ensemble = 100
+n_ensemble = 120
 models = []
 for i in range(n_ensemble):
     idx = np.random.choice(len(X_train), size=len(X_train), replace=True)
