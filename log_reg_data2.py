@@ -9,64 +9,74 @@ from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
+from sklearn.decomposition import PCA
+
 #read in dataset
 data = pd.read_csv('mas_dataset_NN.csv')
 
-#create labels
-X = data[['X_1','X_2','X_3','X_4','X_5','X_6','X_7','X_8','X_9','X_10']]
+# Create labels
+X = data[['X_1', 'X_2', 'X_3', 'X_4', 'X_5', 'X_6', 'X_7', 'X_8', 'X_9', 'X_10']].values
 y = data['Y'].values
 
-#split up data
+# Split up data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-#Train logistic regression models for each feature pair
-feature_pairs = [(i,j) for i in range(10) for j in range(i+1, 10)]
-print(feature_pairs)
-models = {}
-for i, (f1, f2) in enumerate(feature_pairs):
-    X_train_pair = X_train.iloc[:, [f1, f2]].values # select two feautres
-    model = LogisticRegression()
-    model.fit(X_train_pair, y_train)
-    models[(f1,f2)] = model
-    #print(f"Model trained for features X_{f1 + 1} and X_{f2 + 1}: Coefficients = {model.coef_}, Intercept = {model.intercept_}")
+# Train logistic regression model using all features
+model = LogisticRegression()
+model.fit(X_train, y_train)
 
-#Evaluate model on test set
-for (f1, f2), model in models.items():
-    X_test_pair = X_test.iloc[:, [f1, f2]].values
-    predictions = model.predict(X_test_pair)
-    accuracy = accuracy_score(y_test, predictions)
-    #print(f"Accuracy for features X_{f1 + 1} and X_{f2 + 1}: {accuracy:.4f}")
+# Evaluate model on test set
+predictions = model.predict(X_test)
+accuracy = accuracy_score(y_test, predictions)
+print(f"Accuracy of the logistic regression model: {accuracy:.4f}")
 
-#visualize decision boundaries for a selected feature pair
-selected_pair = (0, 1)  # Visualize for the first two features (X_1 and X_2)
-X_pair = X.iloc[:, list(selected_pair)].values
-model = models[selected_pair]
+# Visualize classification results
+# Create a boolean array indicating whether the classification is correct
+correct_classification = predictions == y_test
 
-# Create a grid for visualization
-x1_range = np.linspace(X_pair[:, 0].min(), X_pair[:, 0].max(), 400)
-x2_range = np.linspace(X_pair[:, 1].min(), X_pair[:, 1].max(), 400)
-X1, X2 = np.meshgrid(x1_range, x2_range)
-grid_points = np.c_[X1.ravel(), X2.ravel()]
-
-# Predict probabilities for the grid points
-probs = model.predict_proba(grid_points)[:, 1]
-Z = probs.reshape(X1.shape)
-
-# Plot the decision boundary
+# Plot the data points, coloring them based on whether they were classified correctly
 plt.figure(figsize=(8, 8))
-plt.contour(X1, X2, Z, levels=[0.5], linewidths=2, linestyles='--', colors='blue')
+plt.scatter(
+    X_test[correct_classification, 0], 
+    X_test[correct_classification, 1], 
+    c='blue', 
+    label='Correctly Classified', 
+    alpha=0.6
+)
+plt.scatter(
+    X_test[~correct_classification, 0], 
+    X_test[~correct_classification, 1], 
+    c='orange', 
+    label='Incorrectly Classified', 
+    alpha=0.6
+)
 
-# Scatter plot of the data
-inside = y == 1
-outside = y == 0
-plt.scatter(X_pair[inside, 0], X_pair[inside, 1], c='green', label='Inside MAS', alpha=0.4)
-plt.scatter(X_pair[outside, 0], X_pair[outside, 1], c='red', label='Outside MAS', alpha=0.4)
+
+# Perform 5-fold cross-validation
+cv_scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
+print(f"Cross-Validation Accuracy: {np.mean(cv_scores):.4f} ± {np.std(cv_scores):.4f}")
 
 # Add labels, legend, and grid
-plt.xlabel(f'X_{selected_pair[0] + 1}')
-plt.ylabel(f'X_{selected_pair[1] + 1}')
-plt.title(f'Logistic Regression Decision Boundary for X_{selected_pair[0] + 1} and X_{selected_pair[1] + 1}')
+plt.xlabel('X_1')
+plt.ylabel('X_2')
+plt.title('Classification Results Using All Features')
 plt.legend()
 plt.axis('equal')
 plt.grid(True)
 plt.show()
+
+# # Reduce data to 2 dimensions
+# pca = PCA(n_components=2)
+# X_pca = pca.fit_transform(X)
+
+# # Plot the reduced data
+# plt.figure(figsize=(8, 8))
+# plt.scatter(X_pca[y == 1, 0], X_pca[y == 1, 1], c='blue', label='Class 1', alpha=0.6)
+# plt.scatter(X_pca[y == 0, 0], X_pca[y == 0, 1], c='orange', label='Class 0', alpha=0.6)
+# plt.xlabel('Principal Component 1')
+# plt.ylabel('Principal Component 2')
+# plt.title('PCA Visualization of the Dataset')
+# plt.legend()
+# plt.grid(True)
+# plt.show()
