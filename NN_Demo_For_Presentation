@@ -1,0 +1,78 @@
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import numpy as np
+import pandas as pd
+
+from sklearn.datasets import make_classification
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
+
+#K-Folds imports
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+
+print("--------------------------------------------------------------")
+
+#import data
+data = pd.read_csv('mas_dataset_NN.csv')
+
+X = data[['X_1','X_2','X_3','X_4','X_5','X_6','X_7','X_8','X_9','X_10']].values #input states
+
+y = data['Y'].values  # whether inside or outside of MAS
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #70/30 train test split
+
+#defaults uses relu which can handle nonlinearity
+#MPLClassifier is used for binary
+#clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42) only needs 300 iterations
+clf = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=1000, random_state=42)
+#clf = MLPClassifier(hidden_layer_sizes=(20, 20), max_iter=300, random_state=42)
+clf.fit(X_train, y_train)
+
+predictions = clf.predict(X_test) #predictions
+
+print("Accuracy:", accuracy_score(y_test, predictions, normalize=True)) #show accuracy
+
+
+fig, ax = plt.subplots()
+
+def add_point(x, y, color):
+    ax.scatter(x, y, color=color, s=50)
+    plt.draw()
+
+true_pos = 0
+false_pos = 0
+true_neg = 0
+false_neg = 0
+
+for i in range(0, len(y_test)):
+    color = 'black'
+    predicted_value = predictions[i]
+    actual_value = y_test[i]
+    x_on_plot = X_test[i][0]
+    y_on_plot = X_test[i][1]
+    if predicted_value == actual_value:
+        if predicted_value == 1:
+            color = 'lightgreen'
+            true_pos += 1
+        else:
+            color = 'pink'
+            true_neg += 1
+    else:
+        if predicted_value == 1:
+            color = 'green'
+            false_pos += 1
+        else:
+            color = 'red'
+            false_neg += 1
+    add_point(x_on_plot, y_on_plot, color)
+
+legend_elements = [Line2D([0], [0], marker='o', color='w', markerfacecolor='lightgreen', markersize=10, label='True Positive'),
+                   Line2D([0], [0], marker='o', color='w', markerfacecolor='pink', markersize=10, label='True Negative'),
+                   Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=10, label='False Positive'),
+                   Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=10, label='False Negative')]
+
+plt.legend(handles=legend_elements)
+
+plt.show()
