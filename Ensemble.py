@@ -1,3 +1,9 @@
+'''
+This is the main file for the Neural Network Ensemble
+It trains the model and provides a confusion Matrix
+'''
+
+
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import numpy as np
@@ -94,10 +100,10 @@ plt.show()
 
 
 # Data for the table
-data = [['True Positive', 'False Positive'], ['False Negative', 'True Negative']]
+data = [[true_pos, false_pos], [false_neg, true_neg]]
 
 # Creating the DataFrame with the labels
-df = pd.DataFrame(data, columns=[true_pos, false_neg], index=[false_pos, true_neg])
+df = pd.DataFrame(data, columns=['Predicted True', 'Predicted False'], index=['Actual True', 'Actual False'])
 
 # Create a plot to display the table
 fig, ax = plt.subplots(figsize=(5, 3))  # Adjust the size as needed

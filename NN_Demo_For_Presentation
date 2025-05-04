@@ -25,9 +25,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) #70/30 
 
 #defaults uses relu which can handle nonlinearity
 #MPLClassifier is used for binary
-#clf = MLPClassifier(hidden_layer_sizes=(20,10), max_iter=350, random_state=42) only needs 300 iterations
+#multi layer perceptron
 clf = MLPClassifier(hidden_layer_sizes=(5,10), max_iter=1000, random_state=42)
-#clf = MLPClassifier(hidden_layer_sizes=(20, 20), max_iter=300, random_state=42)
+
 clf.fit(X_train, y_train)
 
 predictions = clf.predict(X_test) #predictions
@@ -74,5 +74,37 @@ legend_elements = [Line2D([0], [0], marker='o', color='w', markerfacecolor='ligh
                    Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=10, label='False Negative')]
 
 plt.legend(handles=legend_elements)
+
+#plt.show()
+
+# Data for the table
+data = [[true_pos, false_pos], [false_neg, true_neg]]
+
+# Creating the DataFrame with the labels
+df = pd.DataFrame(data, columns=['Predicted True', 'Predicted False'], index=['Actual True', 'Actual False'])
+
+# Create a plot to display the table
+fig, ax = plt.subplots(figsize=(5, 3))  # Adjust the size as needed
+ax.axis('tight')
+ax.axis('off')
+
+# Plot the table
+table = ax.table(cellText=df.values, colLabels=df.columns, rowLabels=df.index, loc='center', cellLoc='center')
+
+# Set colors for each cell
+for (i, j), cell in table.get_celld().items():
+    if i == 1 and j == 0:
+        cell.set_facecolor('lightgreen')
+    elif i == 1 and j == 1:
+        cell.set_facecolor('red')
+    elif i == 2 and j == 0:
+        cell.set_facecolor('green')
+    elif i == 2 and j == 1:
+        cell.set_facecolor('pink')
+
+# Adjust font size and table styling
+table.auto_set_font_size(False)
+table.set_fontsize(14)
+table.scale(1, 1.5)
 
 plt.show()
