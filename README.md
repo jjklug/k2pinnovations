@@ -1,10 +1,15 @@
 # k2pinnovations
 machine learning final project - farzan, david, jack
 
+How to Run
+* Run Ensemble.py to generate Neural Network Ensemble
+* Run KFoldsCrossValidationForEnsemble.py to see validation
+
 Breakdown of Main files
-* Ensemble.py This is the file that trains the Neural Network Ensemble (Ensemble.ipybn should be the same but foratted as a notebook so singular sections can be run one at a time)
+* Ensemble.py This is the file that trains the Neural Network Ensemble (Ensemble.ipybn should be the same but formatted as a notebook so singular sections can be run one at a time)
 * KFoldsCrossValidationForEnsemble.py This file runs the K-folds validation on the NN Ensemble
 * logreg.py - This file runs the logistic regression on the original dataset used for comparison to NN\
+* mas_dataset_NN.csv is the file containing the large MAS dataset with 10 inputs and an output demonstrating wether the inputs fit the parameters of the MAS
 
 
 Files that are not a main part of the project.
