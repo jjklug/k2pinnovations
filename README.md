@@ -1,9 +1,13 @@
 # k2pinnovations
 machine learning final project - farzan, david, jack
 
-How to Run
+How to Run - Neural network
 * Run Ensemble.py to generate Neural Network Ensemble
 * Run KFoldsCrossValidationForEnsemble.py to see validation
+
+How to Run - Logistic Regression
+* Run logreg.py with mas_data_ex_3.5.csv to generate logistic regression model
+* This will classify points properly to in or out of the MAS and produce the plots to prove it
 
 Breakdown of Main files
 * Ensemble.py This is the file that trains the Neural Network Ensemble (Ensemble.ipybn should be the same but formatted as a notebook so singular sections can be run one at a time)
@@ -26,10 +30,3 @@ Various pngs that are pots produced from the code:
 * lin_reg_ex.png
 * logregblockdiag.png
 * ConfusionmatrixforNNensemble.png
-
-
-To achieve the test results presented:
-* Logistic regression - run logreg.py using mas_data_ex_3.5.csv
-  * This file is needed specifically to achieve the perfectly bounded MAS that you see in our graphs
-* Neural Network MLP
-  * To produce full test results
