@@ -15,7 +15,7 @@ label_names = ['label1', 'label2', 'label3', 'label4']
 
 #create a dictionary to store all those binary labels
 # key is label name
-# value is a binary array (thresholded so 1 if val in array is <= 0 and otherwise 0)
+# value is a binary array (thresholded so 1 if value is negative and 0 otherwise)
 y_labels = {}
 for name in label_names:
     y = (data[name] <= 0).astype(int)  
