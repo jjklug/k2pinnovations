@@ -23,5 +23,8 @@ Various pngs that are pots produced from the code:
 * ConfusionmatrixforNNensemble.png
 
 
-To achieve test results presented:
+To achieve the test results presented:
 * Logistic regression - run logreg.py using mas_data_ex_3.5.csv
+  * This file is needed specifically to achieve the perfectly bounded MAS that you see in our graphs
+* Neural Network MLP
+  * To produce full test results
