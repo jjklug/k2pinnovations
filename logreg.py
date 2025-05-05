@@ -4,17 +4,24 @@ from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
-
+#import the data from our csv file
 data = pd.read_csv('mas_data_ex_3.5.csv')
+
+#extract features
 X = data[['x1', 'x2']].values
 
+# list of labels that represent binary classification labels
 label_names = ['label1', 'label2', 'label3', 'label4']
-y_labels = {}
 
+#create a dictionary to store all those binary labels
+# key is label name
+# value is a binary array (thresholded so 1 if val in array is <= 0 and otherwise 0)
+y_labels = {}
 for name in label_names:
     y = (data[name] <= 0).astype(int)  
     y_labels[name] = y
 
+#Runs a logistic regression model for each label's binary classification array
 models = {}
 for i, name in enumerate(label_names):
     model = LogisticRegression()
@@ -22,17 +29,22 @@ for i, name in enumerate(label_names):
     models[name] = model
     print(f"{name}: Coefficients = {model.coef_}, Intercept = {model.intercept_}")
 
+#creates a grid for decision boundary visualization
 x1_range = np.linspace(X[:, 0].min(), X[:, 0].max(), 400)
 x2_range = np.linspace(X[:, 1].min(), X[:, 1].max(), 400)
 X1, X2 = np.meshgrid(x1_range, x2_range)
 grid_points = np.c_[X1.ravel(), X2.ravel()]
 
+#predicts probabilities for the grid
 Z_all = []
 for model in models.values():
     probs = model.predict_proba(grid_points)[:, 1]  
     Z = probs.reshape(X1.shape)
     Z_all.append(Z)
 
+#plotting data points based on the Inside/Outside MAS column in the dataset
+#then plots decision boundaries produced from the logistic regression with the points
+#shows us that we classified the points correctly to be inside or outside MAS
 plt.figure(figsize=(8, 8))
 
 inside = data['inside_MAS'] == 1
@@ -50,6 +62,9 @@ plt.legend()
 plt.axis('equal')
 plt.grid(True)
 plt.show()
+
+
+#Plots a confusion matrix to show predicted classification v true labels
 
 # Compute and plot confusion matrix based on the inside_MAS column
 y_true = data['inside_MAS'].values  # True labels from the inside_MAS column
